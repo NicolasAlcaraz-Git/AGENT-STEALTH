@@ -17,8 +17,8 @@ version: 1
   criterios CR-01 a CR-10 de `docs/especificacion.md` y `npm.cmd run validate` en verde.
 - Estado inicial: rama `main`, commit base `c48f184` (repositorio individual desde la
   plantilla). Baseline H1–H3: 39 pruebas en 6 archivos.
-- Herramienta y modelo declarados: OpenCode; modelo declarado por la persona en la entrega.
-  El registro no incluye razonamientos internos del modelo.
+- Herramienta y modelo declarados: OpenCode; modelo `opencode/big-pickle` (H3 declaró
+  `openai/gpt-5.6-sol`). El registro no incluye razonamientos internos del modelo.
 
 | Orden | Entrada relevante | Acción o herramienta | Resultado observable | Decisión humana |
 |---:|---|---|---|---|
@@ -46,6 +46,16 @@ version: 1
 | El clic como destino manual se elimina | El guardia decide su conducta | Extracción definitiva del modo H3 en escena |
 | Captura por distancia euclidiana entre centros ≤ 20 px | Simplifica y es verificable | Prueba a distancia límite |
 | Búsqueda por celdas Manhattan ≤ 3 en orden estable | Orden determinado y repetible | Test de barrido de celdas |
+
+## Acciones rechazadas
+
+| Acción | Decisión | Motivo |
+|---|---|---|
+| Instalar o actualizar dependencias | Rechazada | El alcance no requiere dependencias nuevas; se conserva el lockfile |
+| Acceder a internet o a la red | Rechazada | Fuera de alcance según la matriz de permisos |
+| Leer secretos o datos personales | Rechazada | El laboratorio no los necesita |
+| Ampliar el alcance a H5 u otros comportamientos | Rechazada | El alcance aprobado es H4 |
+| Modificar configuración de Git / crear commits | Rechazada (acción humana) | El control de versiones lo maneja exclusivamente la persona |
 
 ## Cierre
 

@@ -39,6 +39,8 @@ El hito H4 del laboratorio está **implementado y validado**:
 
 ## Controles humanos y permisos
 
+- Herramienta y modelo: OpenCode con modelo `opencode/big-pickle` para H4 (H3 declaró
+  `openai/gpt-5.6-sol`).
 - La primera consulta al agente fue de sólo lectura; la escritura se habilitó tras aprobar
   GDD, especificación y plan.
 - Se aplicó la matriz de `docs/permisos-recomendados.md`: edición acotada al alcance;
@@ -92,5 +94,11 @@ El hito H4 del laboratorio está **implementado y validado**:
 ## Acciones humanas pendientes
 
 1. Commits progresivos y commit final evaluable.
-2. Entrega en la plataforma con URL, hash del commit, herramienta/modelo, comandos de
-   validación y declaración de ausencia de secretos.
+2. Entrega en la plataforma con:
+   - URL del repositorio: `https://github.com/NicolasAlcaraz-Git/AGENT-STEALTH.git`.
+   - Hash del commit final evaluable (el commit base conservado es `c48f184`).
+   - Herramienta y modelo: OpenCode, modelo `opencode/big-pickle`.
+   - Comandos de validación ejecutados y resultado (`npm.cmd run validate` aprobado:
+     typecheck, 70 pruebas en 8 archivos, build de 22 módulos).
+   - Declaración de que el repositorio no contiene secretos, credenciales ni datos
+     privados.
