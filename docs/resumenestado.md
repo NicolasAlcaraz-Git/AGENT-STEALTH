@@ -1,28 +1,36 @@
 Resumen de estado para retomar la sesión
+
 Contexto
-- Proyecto: Laboratorio "Guardia de Sigilo" (PIAPC 2026). H0–H3 completados; H4 (máquina de estados) es la tarea.
+- Proyecto: Laboratorio "Guardia de Sigilo" (PIAPC 2026). H0–H3 completados; H4 (máquina de estados) IMPLEMENTADO y validado. Entrega 15/9/2026 23:59 (hoy 14/9).
 - Stack: Phaser 3.90, Vite 6.4.3, Vitest 4.1.10, TypeScript 5.9 estricto, Node 22.
 - Dato operativo: la política de PowerShell bloquea npm.ps1 → usar npm.cmd.
-- Baseline verificado: npm.cmd run validate = typecheck OK, 39 pruebas (6 archivos) OK, build OK. La advertencia de chunk de Phaser es conocida.
-Estructura actual (lo que existe, sin tocar)
-- src/domain/: navigation/{gridGraph,search,pathFollower}.ts, perception/{perception,memory}.ts, model/{grid,vector}.ts. No hay behavior/ ni telemetry/.
-- src/application/simulation/: labLevel.ts (mapa GRID 30×20, TILE 32), navigationDemo.ts, perceptionSimulation.ts.
-- src/game/scenes/GameScene.ts: navegación manual por clic; en H4 pasa a autónoma (clic se elimina; Q y R se conservan).
-- tests/: navigation, perception, model, application (baseline 39).
+- Repo: público con commit inicial y "GDD agregado". Git lo maneja el humano (no hago init/commits/push). docs/resumenestado.md está sin seguimiento (untracked).
+
+Estructura actual (H4 implementado)
+- src/domain/: behavior/fsm.ts (NUEVO), telemetry/telemetry.ts (NUEVO), navigation/{gridGraph,search,pathFollower}.ts, perception/{perception,memory}.ts, model/{grid,vector}.ts.
+- src/application/simulation/: labLevel.ts (mapa GRID 30×20, TILE 32), navigationDemo.ts, perceptionSimulation.ts, guardSimulation.ts (NUEVO: coordina percepción + FSM + navegación + telemetría).
+- src/game/scenes/GameScene.ts: MODO AUTÓNOMO. Se eliminó el clic como destino manual y el toggle de algoritmo (SPACE); se conservan Q (sonido) y R (reinicio). HUD muestra estado, última transición (previo → nuevo + evento), causa, visión, sonido y memoria. Se dibuja la ruta activa y el marcador de última posición conocida.
+- tests/: navigation, perception, model, application (baseline 39), behavior/fsm.test.ts (NUEVO, 21), application/guardSimulation.test.ts (NUEVO, 10). Total 70 pruebas en 8 archivos.
+
 Decisiones confirmadas por el usuario
 1. Incluir CAPTURADO (terminal) en la FSM.
 2. Flujo Investigar → Buscar → Regresar (al llegar a la última posición conocida sin visión se busca y luego se regresa).
 3. Integrar la FSM en la escena Phaser (jugable + telemetría en pantalla).
-4. Git lo maneja el humano: el repo no tiene .git; yo no hago init/commits/push. El usuario crea el repo individual y conserva commit inicial/progresivos/final.
-5. Alcance H4 completo (aceptado el riesgo del plazo: entrega 15/9/2026 23:59, hoy 14/9).
+4. Git lo maneja el humano.
+5. Alcance H4 completo (aceptado el riesgo del plazo).
 6. Los 4 artefactos previos se redactan como borradores para revisión humana antes de implementar.
-Constantes y puntos de patrulla acordados
+7. El clic como destino manual se elimina definitivamente.
+8. La captura se verifica por distancia euclidiana entre centros (guardia-jugador) ≤ CAPTURE_DISTANCE_PX.
+9. La búsqueda usa celdas a distancia Manhattan ≤ SEARCH_RADIUS_CELLS desde la LKP, en orden estable.
+
+Constantes y puntos de patrulla implementados
 - REPLAN_INTERVAL_MS = 500 (Perseguir)
 - SEARCH_DURATION_MS = 3000
 - SEARCH_RADIUS_CELLS = 3
 - CAPTURE_DISTANCE_PX = 20
 - PATROL_POINTS cíclicos: (27,17) → (28,5) → (5,2) → (6,17) → (27,17)
-Diseño FSM (propuesta aprobada)
+
+Diseño FSM implementado
 Estados: PATROL, INVESTIGATE, CHASE, SEARCH, RETURN, CAPTURED.
 - PATROL → CHASE (visión válida) | → INVESTIGATE (sonido oído, visión inválida); al llegar → siguiente punto cíclico; punto inaccesible → alternativo.
 - INVESTIGATE → CHASE (visión) | → SEARCH (llega a LKP) | → RETURN (LKP inaccesible); nueva percepción → re-destino.
@@ -30,22 +38,32 @@ Estados: PATROL, INVESTIGATE, CHASE, SEARCH, RETURN, CAPTURED.
 - SEARCH → CHASE (recupera visión) | → RETURN (se agota el tiempo). Fases: viaje al LKP + recorrido limitado.
 - RETURN → CHASE (visión) | → PATROL (llega a punto válido); punto inaccesible → alternativo.
 - CAPTURED: terminal, no navega.
-- Reglas: visión > sonido; LKP sólo por percepción válida; decidir sólo sobre lo percibido; recalcular en CHASE sólo si cambia el objetivo o vence el intervalo; telemetría por transición.
-Verificación vs. docs/consignasparcial.md
-- Cumplido: primera consulta de sólo lectura (el análisis de promptdemuestra.md).
-- Pendiente (obligatorio): repo público con commits (acción humana), GDD.md, docs/auditoria-repositorio.md, docs/especificacion.md, docs/plan.md, matriz de permisos completada, docs/registro-intervencion.md, docs/evidencia-pruebas.md, docs/informe-final.md, y entrega en plataforma (URL + hash + herramienta + comandos + declaración sin secretos).
+- Reglas: visión > sonido; LKP sólo por percepción válida; decidir sólo sobre lo percibido; recalcular en CHASE sólo si cambia el objetivo o vence el intervalo; telemetría por transición (tiempo, estado previo, evento, estado nuevo, causa).
+
+Artefactos de proceso (Hitos de docs/consignasparcial.md)
+- GDD.md: aprobado y commiteado.
+- docs/auditoria-repositorio.md, docs/especificacion.md, docs/plan.md: BORRADORES aprobados (heurística de decisión 6 cumplida).
+- docs/registro-intervencion.md, docs/evidencia-pruebas.md, docs/informe-final.md: PENDIENTES.
+- Matriz de permisos: la referencia docs/permisos-recomendados.md ya existía; el registro de uso efectivo va en docs/registro-intervencion.md.
+- Entrega en plataforma: pendiente (URL + hash + herramienta/modelo + comandos + declaración sin secretos), acción del humano.
+
+Validación (verificada)
+- npm.cmd run validate = typecheck OK, 70 pruebas (8 archivos) OK, build OK (22 módulos). Advertencia de chunk de Phaser conocida y aceptada.
+- Smoke test: vite preview + solicitud HTTP local → HTTP 200 (1231 bytes).
+- Caso límite cubierto en tests: pérdida de visión durante persecución con ruta activa → destino = LKP (no la posición viva), replanificación desde la posición actual, sin información futura.
+
 Hecho hasta ahora
-1. Análisis read-only y propuesta H4 completa (evidencia, supuestos, tabla de transiciones, hitos H4.1–H4.5, estrategia de pruebas, archivos afectados, condiciones de detención).
-2. Cuestionario de diseño respondido.
-3. Auditoría de cumplimiento contra la consigna y plan reformulado en 8 fases (aprobado por el usuario).
-4. Todos creados y baseline npm run validate verificado (39 pruebas).
-5. GDD.md escrito en la raíz — PENDIENTE de revisión/aprobación humana (fue lo último antes de este resumen).
+1. Guardia autónomo con FSM completa (dominio puro, sin Phaser/DOM).
+2. Telemetría por transición en dominio y mostrada en HUD.
+3. Coordinación percepción+FSM+navegación en guardSimulation.ts (reloj inyectado, testeable sin navegador).
+4. Escena en modo autónomo con ruta, cono de visión, radio sonoro y última posición conocida visibles.
+5. 70 pruebas verdes (39 baseline + 21 FSM + 10 simulación) y build OK.
+
 Siguientes pasos (orden)
-1. Usuario revisa/aprueba GDD.md.
-2. Borradores docs/auditoria-repositorio.md, docs/especificacion.md, docs/plan.md (presentar uno a uno para revisión).
-3. Matriz de permisos + docs/registro-intervencion.md.
-4. Implementar H4.1 a H4.5 (dominio puro → tests tests/behavior/ → src/application/simulation/guardSimulation.ts + src/domain/telemetry/telemetry.ts → conexión GameScene.ts).
-5. docs/evidencia-pruebas.md + npm.cmd run validate final.
-6. docs/informe-final.md; commits y entrega los hace el humano.
+1. docs/registro-intervencion.md (acciones, herramientas, decisiones humanas; sin razonamientos internos del modelo).
+2. docs/evidencia-pruebas.md (camino principal + caso límite, relacionados con CR-01 a CR-10; comandos reproducibles) + npm.cmd run validate de cierre.
+3. docs/informe-final.md (resultado, decisiones, controles humanos, límites, riesgos).
+4. Commits (progresivos/final) y entrega en plataforma: acciones EXCLUSIVAS del humano.
+
 Restricciones vigentes
-Dominio sin Phaser/DOM; percepción/memoria/decisión/búsqueda/locomoción separadas; sin dependencias nuevas, red, secretos ni publicar; no escribir artefactos finales antes de revisión (según decisión 6); el control de versiones es exclusivo del humano.
+Dominio sin Phaser/DOM; percepción/memoria/decisión/búsqueda/locomoción separadas; sin dependencias nuevas, red, secretos ni publicar; el control de versiones es exclusivo del humano. Límites declarados: no hay pruebas automatizadas de navegador; la interacción visual se verifica por compilación + arranque HTTP + secuencias manuales (mismo criterio que H3).

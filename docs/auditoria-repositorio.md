@@ -89,8 +89,11 @@ Baseline verificado el 14/9/2026 con `npm.cmd run validate`: tipos OK, 39 prueba
 - EL guardia comienza en `GUARD_START=(27,17)`, que coincide con el primer punto de patrulla del ciclo.
 - La constante `CAPTURE_DISTANCE_PX=20` usará las coordenadas de mundo (círculos del guardia y del jugador).
 
-## Preguntas abiertas
+## Preguntas abiertas resueltas en revisión
 
-- Al migrar a modo autónomo (H4), ¿se conserva el clic como herramienta de inspección pedagógica o se elimina por completo? El resumen de estado indica que el clic se elimina y quedan `Q` y `R`.
-- ¿La persecución debe verificar la captura por centro del círculo del jugador o por borde de los gráficos? La decisión actual indica distancia euclidiana de centros ≤ 20 px.
-- ¿El recorrido de búsqueda (SEARCH) alrededor de la última posición conocida debe priorizar celdas por distancia Manhattan o por algún orden fijo? El GDD fija radio (3 celdas) y duración (3000 ms), no el orden.
+- El clic como destino manual de navegación se elimina definitivamente en H4; el guardia
+  queda autónomo y se conservan `Q` y `R`.
+- La captura se verifica por distancia euclidiana entre centros (guardia-jugador) ≤
+  `CAPTURE_DISTANCE_PX`.
+- El orden de búsqueda alrededor de la última posición conocida se resuelve por celdas de
+  distancia Manhattan ≤ `SEARCH_RADIUS_CELLS`, enumeradas en orden estable.

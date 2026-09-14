@@ -25,7 +25,10 @@ H5.
   manual de navegación; se conservan `Q` (sonido) y `R` (reinicio) y la telemetría en HUD.
 - Constantes: patrulla cíclica (27,17) → (28,5) → (5,2) → (6,17) → (27,17);
   `REPLAN_INTERVAL_MS=500` (Perseguir); `SEARCH_DURATION_MS=3000`;
-  `SEARCH_RADIUS_CELLS=3`; `CAPTURE_DISTANCE_PX=20`.
+  `SEARCH_RADIUS_CELLS=3`; `CAPTURE_DISTANCE_PX=20` (distancia euclidiana entre centros).
+- Decisiones confirmadas: el clic como destino manual se elimina; el recorrido de búsqueda
+  usa celdas a distancia Manhattan ≤ `SEARCH_RADIUS_CELLS` desde la última posición
+  conocida, en orden estable.
 
 ## Restricciones
 
