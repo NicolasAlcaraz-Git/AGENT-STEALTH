@@ -4,7 +4,7 @@ Contexto
 - Proyecto: Laboratorio "Guardia de Sigilo" (PIAPC 2026). H0–H3 completados; H4 (máquina de estados) IMPLEMENTADO y validado. Entrega 15/9/2026 23:59 (hoy 14/9).
 - Stack: Phaser 3.90, Vite 6.4.3, Vitest 4.1.10, TypeScript 5.9 estricto, Node 22.
 - Dato operativo: la política de PowerShell bloquea npm.ps1 → usar npm.cmd.
-- Repo: público con commit inicial y "GDD agregado". Git lo maneja el humano (no hago init/commits/push). docs/resumenestado.md está sin seguimiento (untracked).
+- Repo: público. Git lo maneja el humano (no hago init/commits/push). Commit evaluado de H4: `ee1b41b` (docs/resumenestado.md ya está commiteado).
 
 Estructura actual (H4 implementado)
 - src/domain/: behavior/fsm.ts (NUEVO), telemetry/telemetry.ts (NUEVO), navigation/{gridGraph,search,pathFollower}.ts, perception/{perception,memory}.ts, model/{grid,vector}.ts.
@@ -43,7 +43,7 @@ Estados: PATROL, INVESTIGATE, CHASE, SEARCH, RETURN, CAPTURED.
 Artefactos de proceso (Hitos de docs/consignasparcial.md)
 - GDD.md: aprobado y commiteado.
 - docs/auditoria-repositorio.md, docs/especificacion.md, docs/plan.md: BORRADORES aprobados (heurística de decisión 6 cumplida).
-- docs/registro-intervencion.md, docs/evidencia-pruebas.md, docs/informe-final.md: PENDIENTES.
+- docs/registro-intervencion.md, docs/evidencia-pruebas.md, docs/informe-final.md: COMPLETADOS el 14/9/2026 en docs/ raíz (verificación: `npm.cmd run validate` de cierre en verde, CR-01 a CR-10 vinculados).
 - Matriz de permisos: la referencia docs/permisos-recomendados.md ya existía; el registro de uso efectivo va en docs/registro-intervencion.md.
 - Entrega en plataforma: pendiente (URL + hash + herramienta/modelo + comandos + declaración sin secretos), acción del humano.
 
@@ -60,10 +60,14 @@ Hecho hasta ahora
 5. 70 pruebas verdes (39 baseline + 21 FSM + 10 simulación) y build OK.
 
 Siguientes pasos (orden)
-1. docs/registro-intervencion.md (acciones, herramientas, decisiones humanas; sin razonamientos internos del modelo).
-2. docs/evidencia-pruebas.md (camino principal + caso límite, relacionados con CR-01 a CR-10; comandos reproducibles) + npm.cmd run validate de cierre.
-3. docs/informe-final.md (resultado, decisiones, controles humanos, límites, riesgos).
-4. Commits (progresivos/final) y entrega en plataforma: acciones EXCLUSIVAS del humano.
+1. Commits (progresivos/final) y entrega en plataforma: acciones EXCLUSIVAS del humano.
+
+Completado en esta sesión
+1. docs/evidencia-pruebas.md: camino principal (CR-08) + caso límite (CR-09) + captura terminal (CR-07), CR-01 a CR-10 vinculados a comandos reproducibles y secuencias manuales A/B/C.
+2. docs/registro-intervencion.md: tabla de acciones, resultados y decisiones humanas del proceso H4.
+3. docs/informe-final.md: resultado, decisiones, controles humanos, validaciones, límites y riesgos.
+4. README.md actualizado (estado H4, controles vigentes Q/R, documentos del proceso, versión 4).
+5. `npm.cmd run validate` de cierre en verde: typecheck OK, 70 pruebas (8 archivos) OK, build OK (22 módulos).
 
 Restricciones vigentes
 Dominio sin Phaser/DOM; percepción/memoria/decisión/búsqueda/locomoción separadas; sin dependencias nuevas, red, secretos ni publicar; el control de versiones es exclusivo del humano. Límites declarados: no hay pruebas automatizadas de navegador; la interacción visual se verifica por compilación + arranque HTTP + secuencias manuales (mismo criterio que H3).

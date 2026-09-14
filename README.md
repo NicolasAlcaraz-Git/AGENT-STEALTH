@@ -4,7 +4,7 @@ titulo: Laboratorio Guardia de Sigilo
 tipo: indice
 audiencia: estudiante
 acceso: publico
-version: 3
+version: 4
 ---
 
 # Laboratorio Guardia de Sigilo
@@ -13,7 +13,7 @@ Proyecto canónico de PIAPC 2026 para aplicar desarrollo agéntico e inteligenci
 
 ## Estado
 
-H0 a H3 implementados: escenario base, repositorio preparado para agentes, navegación BFS/A* y percepción con memoria. La máquina de estados se incorpora en H4.
+H0 a H4 implementados: escenario base, repositorio preparado para agentes, navegación BFS/A*, percepción con memoria y máquina de estados autónoma del guardia (patrullar, investigar, perseguir, buscar, regresar y capturar) con telemetría por transición. El guardia decide de forma autónoma en la escena.
 
 ## Ejecución
 
@@ -33,10 +33,10 @@ npm run validate
 En la escena:
 
 - WASD o flechas: mover al jugador.
-- Clic: elegir un destino para el guardia.
-- Espacio: alternar BFS y A*.
 - Q: emitir un sonido desde el jugador.
 - R: reiniciar el escenario.
+
+El guardia decide solo (patrulla, investiga, persigue, busca y regresa). El HUD muestra el estado actual, la última transición (anterior → nuevo y evento), su causa, el motivo de visión, el sonido y la memoria.
 
 ## Propósito
 
@@ -56,14 +56,22 @@ El proyecto no busca producir un videojuego comercial. Es un entorno de experime
 
 - [Especificación del producto](specs/01-producto.md)
 - [Especificación pedagógica](specs/02-pedagogica.md)
+- [GDD simplificado](GDD.md)
+- [Consigna del parcial](docs/consignasparcial.md)
 - [Arquitectura](docs/arquitectura.md)
 - [Hitos](docs/hitos.md)
 - [Contrato para proyectos alternativos](docs/contrato-proyecto-alternativo.md)
 - [Decisiones técnicas](docs/decisiones-tecnicas.md)
 - [Auditoría H1](docs/auditoria-h1.md)
 - [Permisos recomendados](docs/permisos-recomendados.md)
-- [Registro de intervención](docs/plantillas/registro-intervencion.md)
-- [Evidencia de pruebas](docs/plantillas/evidencia-pruebas.md)
+- [Auditoría del repositorio](docs/auditoria-repositorio.md)
+- [Especificación H4](docs/especificacion.md)
+- [Plan H4](docs/plan.md)
+- [Registro de intervención](docs/registro-intervencion.md)
+- [Evidencia de pruebas](docs/evidencia-pruebas.md)
+- [Informe final](docs/informe-final.md)
+- [Resumen de estado](docs/resumenestado.md)
+- [Plantillas](docs/plantillas/registro-intervencion.md)
 - [H3: percepción y movimiento](docs/h3-percepcion-movimiento.md)
 - [Intervención H3](docs/evidencias/h3-intervencion.md)
 - [Validación H3](docs/evidencias/h3-validacion.md)
